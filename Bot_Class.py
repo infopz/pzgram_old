@@ -133,7 +133,7 @@ class Photo:
 
 
 def command_not_found(chat, command):
-    m = f'Command *{command}* not found\nUse /help for the list of possible commads'
+    m = 'Command *'+str(command)+'* not found\nUse /help for the list of possible commads'
     chat.send(m)
 
 

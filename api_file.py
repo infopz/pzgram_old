@@ -6,7 +6,7 @@ from .ExceptionFile import *
 def api_request(key, method, p=None):
     while True:
         try:
-            data = requests.get(f"https://api.telegram.org/bot{key}/{method}", params=p)
+            data = requests.get("https://api.telegram.org/bot"+key+"/"+method, params=p)
         except Exception as e:
             print('Request error - ' + str(e))
             raise RequestError(str(e))

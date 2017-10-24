@@ -80,7 +80,7 @@ class Bot:
         self.timers = timer_dict
 
     def download_file(self, file_path, local_path=''):
-        url = f'https://api.telegram.org/file/bot{self.botKey}/{file_path}'
+        url = 'https://api.telegram.org/file/bot'+self.botKey+'/'+str(file_path)
         local_filename = url.split('/')[-1]
         try:
             r = requests.get(url, stream=True)
