@@ -53,6 +53,7 @@ class Bot:
         self.start_command = False
         self.before_division = False
         self.after_division = False
+        self.exit_func = False
         self.default_keyboard = None
         print("Bot Created")
 
@@ -75,6 +76,8 @@ class Bot:
             self.before_division = True
         if 'after_division' in self.useful_function:
             self.after_division = True
+        if 'exit_func' in self.useful_function:
+            self.exit_func = True
 
     def set_timers(self, timer_dict):
         self.timers = timer_dict
@@ -128,6 +131,11 @@ class Bot:
             for p in process:
                 p.join()
         except KeyboardInterrupt:  # FIXME: study betterd
+            if self.exit_func:
+                if len(self.useful_function['exit_func'].param):
+                    self.useful_function['exit_func'].func(shared)
+                else:
+                    self.useful_function['exit_func'].func()
             print("Shutting Down...")
             for p in process:
                 p.terminate()
