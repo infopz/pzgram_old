@@ -2,6 +2,7 @@ import requests
 import time
 import traceback
 from multiprocessing import Process, Manager
+import threading
 
 from .ExceptionFile import *
 from .Bot_Class import *
@@ -147,34 +148,39 @@ class Bot:
             while True:
                 updates = self.get_updates()
                 for u in updates:
-                    try:
-                        if 'channel_post' in u:
-                            continue
-                        message = self.parse_update(u)
-                        if message.date < self.start_date and not self.accept_old_message:
-                            continue
-                        if message.edited and not self.allow_edited_message:
-                            continue
-                        chat = message.chat
-                        if self.before_division:
-                            args = create_parameters_tuple(self.useful_function['before_division'].param,
-                                                           self, chat, message, shared)
-                            if self.useful_function['before_division'].func(*args):
-                                continue
-                        if message.type == 'command':
-                            self.divide_command(message, chat, shared)
-                            continue  # Step Over the after_division
-                        if self.after_division:
-                            args = create_parameters_tuple(self.useful_function['after_division'].param,
-                                                           self, chat, message, shared)
-                            self.useful_function['after_division'].func(*args)
-                    except Exception as e:  # Write the traceback but the bot continue running
-                        if isinstance(e, StopBot):
-                            raise e
-                        if not isinstance(e, KeyboardInterrupt):
-                            traceback.print_exc()
+                    t = threading.Thread(target=self.run_one_update, args=(u, shared))
+                    t.setDaemon(True)
+                    t.start()
         except KeyboardInterrupt:
             pass
+
+    def run_one_update(self, u, shared):  # ONE THRED
+        try:
+            if 'channel_post' in u:
+                return
+            message = self.parse_update(u)
+            if message.date < self.start_date and not self.accept_old_message:
+                return
+            if message.edited and not self.allow_edited_message:
+                return
+            chat = message.chat
+            if self.before_division:
+                args = create_parameters_tuple(self.useful_function['before_division'].param,
+                                               self, chat, message, shared)
+                if self.useful_function['before_division'].func(*args):
+                    return
+            if message.type == 'command':
+                self.divide_command(message, chat, shared)
+                return  # Step Over the after_division
+            if self.after_division:
+                args = create_parameters_tuple(self.useful_function['after_division'].param,
+                                               self, chat, message, shared)
+                self.useful_function['after_division'].func(*args)
+        except Exception as e:  # Write the traceback but the bot continue running
+            if isinstance(e, StopBot):
+                raise e
+            if not isinstance(e, KeyboardInterrupt):
+                traceback.print_exc()
 
     def start_bot(self, shared):
         a = api_request(self.botKey, 'getMe')  # Check Api and Conncction
