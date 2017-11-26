@@ -8,8 +8,9 @@ def api_request(key, method, p=None):
         try:
             data = requests.get("https://api.telegram.org/bot"+key+"/"+method, params=p)
         except Exception as e:
-            print('Request error - ' + str(e))
-            raise RequestError(str(e))
+            print('API_Request - Requests error: Retry')
+	    time.sleep(0.5)
+            continue
         status_code = data.status_code
         data = data.json()
         if status_code == 200:
