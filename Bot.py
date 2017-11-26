@@ -97,7 +97,7 @@ class Bot:
         return local_filename
 
     def get_updates(self):
-        p = {'offset': self.offset, 'limit': 5, 'timeout': 1000}
+        p = {'offset': self.offset, 'limit': 5, 'timeout': 30}
         while True:
             try:
                 update = api_request(self.botKey, 'getUpdates', p)
