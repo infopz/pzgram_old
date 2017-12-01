@@ -97,10 +97,10 @@ class Bot:
         return local_filename
 
     def get_updates(self):
-        p = {'offset': self.offset, 'limit': 5, 'timeout': 30}
+        p = {'offset': self.offset, 'limit': 5}
         while True:
             try:
-                update = api_request(self.botKey, 'getUpdates', p)
+                update = api_request(self.botKey, 'getUpdates', p, 10)
                 if update == 'apiError':
                     continue
                 if not update['ok']:

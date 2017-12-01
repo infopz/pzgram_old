@@ -3,10 +3,10 @@ import time
 from .ExceptionFile import *
 
 
-def api_request(key, method, p=None):
+def api_request(key, method, p=None, timeout=2):
     while True:
         try:
-            data = requests.get("https://api.telegram.org/bot"+key+"/"+method, params=p)
+            data = requests.get("https://api.telegram.org/bot"+key+"/"+method, params=p,timeout=timeout)
         except Exception as e:
             print('API_Request - Requests error: Retry')
             time.sleep(0.5)
