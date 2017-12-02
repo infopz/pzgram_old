@@ -252,3 +252,4 @@ class Bot:
 
     def set_keyboard(self, buttons, resize=True):
         self.default_keyboard = create_keyboard(buttons, res=resize)
+

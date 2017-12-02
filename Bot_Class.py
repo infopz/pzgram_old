@@ -11,7 +11,7 @@ message_all_attributes = ['text', 'audio', 'document', 'game', 'photo', 'sticker
                           'forward_from_message_id', 'forward_date', 'reply_to_message', 'edit_date']
 chat_all_attributes = ['title', 'username', 'first_name', 'last_name', 'photo']
 user_all_attributes = ['last_name', 'username', 'language_code']
-
+chat_actions = ['typing', 'upload_photo', 'upload_video', 'record_video', 'record_audio', 'upload_audio', 'upload_document', 'find_location', 'record_video_note', 'upload_video_note']
 
 class Command:
 
@@ -74,6 +74,12 @@ class Chat:
             'reply_markup': reply_markup
         }
         api_request(self.bot.botKey, 'sendMessage', parameter)
+   def sendAction(self, action):
+        if action not in chat_actions:
+            print("Error: ChatAction "+str(action)+" not exists")
+            return
+        p = {'chat_id': self.id, 'action': action}
+        api_request(self.bot.botKey, 'setChatAction', params=p)
 
 
 class Message:
