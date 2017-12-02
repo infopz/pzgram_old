@@ -88,6 +88,9 @@ class Message:
         for i in message_possible_type:  # set the type of this message
             if i in kwargs:
                 self.type = i
+                break
+        else:
+            self.type = ""
         if self.type == 'text' and self.text.startswith('/'):
             self.type = 'command'
         for i in message_all_attributes:
