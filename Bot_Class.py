@@ -74,7 +74,7 @@ class Chat:
             'reply_markup': reply_markup
         }
         api_request(self.bot.botKey, 'sendMessage', parameter)
-   def sendAction(self, action):
+    def sendAction(self, action):
         if action not in chat_actions:
             print("Error: ChatAction "+str(action)+" not exists")
             return
