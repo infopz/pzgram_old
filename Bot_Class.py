@@ -79,7 +79,7 @@ class Chat:
             print("Error: ChatAction "+str(action)+" not exists")
             return
         p = {'chat_id': self.id, 'action': action}
-        api_request(self.bot.botKey, 'setChatAction', params=p)
+        api_request(self.bot.botKey, 'sendChatAction', p)
 
 
 class Message:
