@@ -3,7 +3,7 @@ import time
 from .ExceptionFile import *
 
 
-def api_request(key, method, p=None, timeout=2):
+def api_request(key, method, p=None, timeout=3):
     while True:
         try:
             data = requests.get("https://api.telegram.org/bot"+key+"/"+method, params=p,timeout=timeout)

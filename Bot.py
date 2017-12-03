@@ -42,6 +42,7 @@ class Bot:
     def __init__(self, key):
         self.botKey = key
         self.offset = 0
+        self.timeout = 1000
         self.started = False
         self.commands = {}
         self.useful_function = {}
@@ -83,7 +84,7 @@ class Bot:
     def set_timers(self, timer_dict):
         self.timers = timer_dict
 
-    def download_file(self, file_path, local_path=''):
+    def download_file(self, file_path, local_path=''): #TODO: review
         url = 'https://api.telegram.org/file/bot'+self.botKey+'/'+str(file_path)
         local_filename = url.split('/')[-1]
         try:
@@ -100,7 +101,7 @@ class Bot:
         p = {'offset': self.offset, 'limit': 5}
         while True:
             try:
-                update = api_request(self.botKey, 'getUpdates', p, 10)
+                update = api_request(self.botKey, 'getUpdates', p, self.timeout)
                 if update == 'apiError':
                     continue
                 if not update['ok']:
@@ -253,3 +254,5 @@ class Bot:
     def set_keyboard(self, buttons, resize=True):
         self.default_keyboard = create_keyboard(buttons, res=resize)
 
+    def set_timeout(self, new_timeout):
+        self.timeout = new_timeout
