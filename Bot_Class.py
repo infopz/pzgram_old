@@ -73,7 +73,7 @@ class Chat:
             'reply_to_message_id': reply,
             'reply_markup': reply_markup
         }
-        api_request(self.bot.botKey, 'sendMessage', parameter)
+        return api_request(self.bot.botKey, 'sendMessage', parameter)
 
 
     def sendAction(self, action):
@@ -106,7 +106,7 @@ class Message:
                 exec('self.'+i+'=None')
 
     def reply(self, text):  # FIXME, add all the options for chat.send
-        self.chat.send(text, reply=self.id)
+        return self.chat.send(text, reply=self.id)
 
 
 class User:
@@ -243,6 +243,7 @@ def default_help(chat, commands):
     for c in commands:
         possible_commands += commands[c].name + '\n'
     chat.send("Here's the list of possible commands:\n" + possible_commands)
+
 
 def calc_delay(delay):
     seconds_today = (datetime.now().hour * 3600) + (datetime.now().minute * 60) + datetime.now().second
