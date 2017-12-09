@@ -16,13 +16,13 @@ def api_request(key, method, p=None, timeout=3):
         if status_code == 200:
             return data
         else:
-            action, data = recognize_error(status_code, data)
+            action, rdata = recognize_error(status_code, data)
             if action == 'continue':
-                return "apiError"+str(code)
+                return "apiError"+str(rdata)
             elif action == 'stop':
-                raise StopBot(data)
+                raise StopBot(rdata)
             elif action == 'retry':
-                time.sleep(data)
+                time.sleep(rdata)
 
 
 def recognize_error(code, data):
