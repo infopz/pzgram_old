@@ -138,10 +138,19 @@ class Photo:
             if get_file == 'apiError' or not get_file['ok']:
                 return ''
             self.bot.download_file(get_file['result']['file_path'], path)
-            return local_filename
+            return local_filename  # TODO
         except:
             return ''
 
+
+class Location:
+
+    def __init__(self, lat, lon):
+        self.latitude = lat
+        self.longitude = lon
+
+    def __repr__(self):
+        return "Lati: "+str(self.latitude)+" Long: "+str(self.longitude)
 
 def command_not_found(chat, command):
     m = 'Command *'+str(command)+'* not found\nUse /help for the list of possible commads'
@@ -203,7 +212,9 @@ def parse_message(message_dict, bot):
                 del aviable_size[-1]
                 biggest_photo.other_size = aviable_size
                 to_pass[i] = biggest_photo
-            # TODO: manage other type
+            elif i == "location":
+                l = Location(message_dict['location']['latitude'], message_dict['location']['longitude'])
+                to_pass[i] = l
     if 'edit_date' in to_pass:
         return Message(id, chat, date, True, **to_pass)
     return Message(id, chat, date, False, **to_pass)

@@ -68,7 +68,7 @@ class Bot:
         if '/help' in self.commands:
             self.help_command = True
 
-    def set_function(self, function_dict):
+    def set_functions(self, function_dict):
         self.useful_function = {}
         for i in function_dict:
             self.useful_function[i] = Function(function_dict[i])
@@ -227,8 +227,9 @@ class Bot:
             pass
 
     def parse_update(self, update):
-        message = parse_message(update['message'], self)
-        return message
+        if "edited_message" in update:
+            return parse_message(update['edited_message'], self)
+        return parse_message(update['message'], self)
 
     def divide_command(self, message, chat, shared):
         text_split = message.text.split()
