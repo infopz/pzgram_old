@@ -101,7 +101,7 @@ class Bot:
         p = {'offset': self.offset, 'limit': 5}
         while True:
             try:
-                update = api_request(self.botKey, 'getUpdates', p, self.timeout)
+                update = api_request("GET", self.botKey, 'getUpdates', p, self.timeout)
                 if str(update).startswith("apiError"):
                     continue
                 if not update['ok']:
@@ -184,7 +184,7 @@ class Bot:
                 traceback.print_exc()
 
     def start_bot(self, shared):
-        a = api_request(self.botKey, 'getMe')  # Check Api and Conncction
+        a = api_request("GET", self.botKey, 'getMe')  # Check Api and Conncction
         if str(a).startswith('apiError'):
             raise StopBot
         self.start_date = datetime.now()

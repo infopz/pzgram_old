@@ -12,3 +12,6 @@ class RequestError(Exception):
 
 class StopBot(Exception):
     pass
+
+class NotFoundError(Exception):
+    pass

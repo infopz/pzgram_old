@@ -1,8 +1,10 @@
 from datetime import datetime
 import inspect
 import json
+import os
 
 from .api_file import api_request
+from .ExceptionFile import *
 
 message_possible_type = ['text', 'audio', 'document', 'game', 'photo', 'sticker', 'video', 'voice', 'video_note',
                          'contact', 'location', 'venue']
@@ -73,7 +75,18 @@ class Chat:
             'reply_to_message_id': reply,
             'reply_markup': reply_markup
         }
-        return api_request(self.bot.botKey, 'sendMessage', parameter)
+        return api_request("GET", self.bot.botKey, 'sendMessage', parameter)
+
+    def sendPhoto(self, photoPath, caption=None, reply_markup=None):
+        if not os.path.isfile(photoPath):
+            raise NotFoundError("File "+str(photoPath)+" not exists or is a directory")
+        files = {"photo": (photoPath, open(photoPath, "rb"))}
+        parameter = {
+            "chat_id": self.id,
+            "caption": caption,
+            "reply_markup": reply_markup
+        }
+        return api_request("POST", self.bot.botKey, 'sendPhoto', parameter, files=files)
 
 
     def sendAction(self, action):
@@ -81,7 +94,7 @@ class Chat:
             print("Error: ChatAction "+str(action)+" not exists")
             return
         p = {'chat_id': self.id, 'action': action}
-        api_request(self.bot.botKey, 'sendChatAction', p)
+        api_request("GET", self.bot.botKey, 'sendChatAction', p)
 
 
 class Message:
@@ -134,7 +147,7 @@ class Photo:
 
     def save(self, path=''):
         try:
-            get_file = api_request(self.bot.botKey, 'getFile', {'file_id': self.file_id})
+            get_file = api_request("GET", self.bot.botKey, 'getFile', {'file_id': self.file_id})
             if get_file == 'apiError' or not get_file['ok']:
                 return ''
             self.bot.download_file(get_file['result']['file_path'], path)
