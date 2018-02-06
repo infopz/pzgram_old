@@ -274,3 +274,7 @@ def calc_delay(delay):
     rem = seconds_today % delay
     new_delay = delay - rem
     return new_delay
+
+
+def print_time():
+    return datetime.now().strftime("%d/%m %H:%M:%S - ")

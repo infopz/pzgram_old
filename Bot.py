@@ -57,7 +57,7 @@ class Bot:
         self.after_division = False
         self.exit_func = False
         self.default_keyboard = None
-        print("Bot Created")
+        print(print_time() + "Bot Created")
 
     def set_commands(self, command_dict):
         self.commands = {}
@@ -105,7 +105,7 @@ class Bot:
                 if str(update).startswith("apiError"):
                     continue
                 if not update['ok']:
-                    print('Error with the update, continue')
+                    print(print_time() + 'UPDATE Error: continue')
                     print(update['description'])
                     continue
                 if len(update['result']) != 0:
@@ -138,13 +138,13 @@ class Bot:
                     self.useful_function['exit_func'].func(shared)
                 else:
                     self.useful_function['exit_func'].func()
-            print("Shutting Down...")
+            print(print_time() + "Shutting Down...")
             for p in process:
                 p.terminate()
 
     def run_bot(self, shared):
         try:
-            print('Bot Started')
+            print(print_time() + 'Bot Started')
             self.started = True
             while True:
                 updates = self.get_updates()
