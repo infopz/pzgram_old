@@ -1,7 +1,8 @@
+# Vecchia versione
 # pzGram
 A pz-way to create your telegram Bot
 
-IMPORTANTE: Richiede Python 3 e requests (scaricabile da pip)
+
 
 ISTRUZIONI (ESEMPIO):
 ```python
